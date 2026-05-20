@@ -1,0 +1,6 @@
+{
+  "name": "Local Car Wash Directory",
+  "description": "An interactive local directory centered on finding proximity-based stationary and mobile car washes, sorted dynamically by price and exact Haversine distance, with custom Leaflet markers.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
