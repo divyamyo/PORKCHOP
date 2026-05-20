@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NagpurCarWash | High-Trust verified Car Detailing & Doorstep Washing Directory</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Space+Grotesk:wght=400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -19,7 +17,6 @@
             fontFamily: {
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
               display: ['"Space Grotesk"', 'sans-serif'],
-              mono: ['"JetBrains Mono"', 'monospace'],
             },
             colors: {
               nagpur: {
@@ -30,10 +27,10 @@
                 400: '#5e9eff',
                 500: '#3378ff',
                 600: '#1e51ff',
-                700: '#1a3fa8', // Deep Saphire Trust Blue
+                700: '#1a3fa8', 
                 800: '#112261',
                 900: '#0e1c4a',
-                orange: '#f97316', // Saffron / Orange City orange
+                orange: '#f97316', 
                 orangeLight: '#ffedd5',
                 verifiedGreen: '#16a34a',
               }
@@ -48,1550 +45,481 @@
       }
     </script>
     
-    <!-- Leaflet.js CSS (Map Component Layer) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
-      /* Smooth transitions and fade animations */
-      .fade-in {
-        animation: fadeIn 0.4s ease-out forwards;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(8px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* Premium Leaflet popup style adjustments */
-      .leaflet-popup-content-wrapper {
-        border-radius: 16px;
-        box-shadow: 0 12px 30px -5px rgba(17, 34, 97, 0.12);
-        border: 1px solid #f1f5f9;
-        padding: 4px;
-        background-color: #ffffff;
-      }
-      .leaflet-popup-content {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        margin: 12px;
-        color: #1e293b;
-      }
-      .leaflet-popup-tip {
-        background: #ffffff;
-      }
-      
-      /* Geolocation pulsing marker effect */
-      .user-pulse-marker {
-        position: relative;
-      }
-      .user-pulse-marker::after {
-        content: '';
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: rgba(30, 81, 255, 0.45);
-        position: absolute;
-        top: -4px;
-        left: -4px;
-        animation: geopulse 2s infinite ease-out;
-      }
-      @keyframes geopulse {
-        0% { transform: scale(0.6); opacity: 1; }
-        100% { transform: scale(2.5); opacity: 0; }
-      }
-
-      /* Custom scrollbars */
-      .custom-scroll::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      .custom-scroll::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
+      .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      .leaflet-popup-content-wrapper { border-radius: 16px; box-shadow: 0 12px 30px -5px rgba(17, 34, 97, 0.12); border: 1px solid #f1f5f9; background-color: #ffffff; }
+      .leaflet-popup-content { font-family: 'Plus Jakarta Sans', sans-serif; margin: 12px; color: #1e293b; }
+      .user-pulse-marker { position: relative; }
+      .user-pulse-marker::after { content: ''; width: 18px; height: 18px; border-radius: 50%; background: rgba(30, 81, 255, 0.45); position: absolute; top: -4px; left: -4px; animation: geopulse 2s infinite ease-out; }
+      @keyframes geopulse { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+      .custom-scroll::-webkit-scrollbar { width: 6px; }
+      .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
   </head>
-  <body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col selection:bg-nagpur-700 selection:text-white overflow-x-hidden">
+  <body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- Top Announcement Banner -->
     <section class="bg-gradient-to-r from-nagpur-900 via-nagpur-800 to-nagpur-700 text-white text-[11px] font-medium py-2 px-4 shadow-sm select-none">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-4 antialiased">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-4">
         <div class="flex items-center space-x-2">
           <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-nagpur-orange text-white text-[9px] font-extrabold tracking-wider animate-pulse mr-1">NAGPUR SPECIAL</span>
-          <span class="text-nagpur-100">🔥 Keeping Nagpur vehicles dust-free & glossy in high heat. Instant waterless doorstep coatings are live!</span>
+          <span class="text-nagpur-100">🔥 Keeping Nagpur vehicles dust-free & glossy. Instant waterless doorstep coatings are live!</span>
         </div>
         <div class="flex items-center space-x-4 text-nagpur-200">
           <span class="flex items-center space-x-1">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> 
-            <span class="font-bold">100% Verified Partners</span>
+            <span class="text-emerald-400 font-bold">✓ 100% Verified Partners</span>
           </span>
           <span class="hidden sm:inline">|</span>
-          <span class="text-white font-bold bg-white/10 px-2 py-0.5 rounded text-[10px]">Zero Mile Support: 91122 00099</span>
+          <span class="text-white font-bold bg-white/10 px-2 py-0.5 rounded text-[10px]">Support Helpline: 91122 00099</span>
         </div>
       </div>
     </section>
 
-    <!-- Header & Navigation -->
     <header class="bg-white/95 border-b border-slate-100 sticky top-0 z-40 backdrop-blur-md shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
-        <!-- Logo / Branding -->
         <div class="flex items-center space-x-3 cursor-pointer" onclick="resetDirectoryState()">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-nagpur-800 to-nagpur-500 flex items-center justify-center shadow-lg shadow-nagpur-200">
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"></path>
-            </svg>
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-nagpur-800 to-nagpur-500 flex items-center justify-center shadow-lg">
+            <span class="text-white text-2xl">🚗</span>
           </div>
           <div>
             <div class="flex items-center space-x-1.5">
-              <h1 class="text-2xl font-black font-display tracking-tight text-nagpur-900">
-                Nagpur<span class="text-nagpur-orange">CarWash</span>
-              </h1>
-              <span class="text-[9px] uppercase font-mono font-bold tracking-widest px-1.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-badge">TRUST™ APPROVED</span>
+              <h1 class="text-2xl font-black font-display tracking-tight text-nagpur-900">Nagpur<span class="text-nagpur-orange">CarWash</span></h1>
+              <span class="text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-badge">TRUST™ APPROVED</span>
             </div>
-            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Orange City Doorstep & Stationed Premium Wash Hub</p>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Orange City Doorstep & Stationed Wash Hub</p>
           </div>
         </div>
 
-        <!-- Right Side Nav Toolbar -->
         <div class="flex items-center space-x-4">
           <div class="hidden lg:flex items-center space-x-2 text-slate-600 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-xl text-xs font-semibold">
-            <i data-lucide="map-pin" class="w-4 h-4 text-nagpur-orange"></i>
             <span id="header-location">Dharampeth, Nagpur</span>
           </div>
-          
-          <button onclick="toggleCreatorDrawer()" class="flex items-center space-x-2 px-4 py-2.5 bg-nagpur-orange hover:bg-nagpur-orange/90 text-white rounded-xl text-xs font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5">
-            <i data-lucide="wrench" class="w-4 h-4"></i>
+          <button onclick="toggleCreatorDrawer()" class="flex items-center space-x-2 px-4 py-2.5 bg-nagpur-orange hover:bg-nagpur-orange/90 text-white rounded-xl text-xs font-bold shadow-md transition-all duration-200">
             <span>🛠️ Open Shop Creator Tool</span>
           </button>
         </div>
       </div>
     </header>
 
-    <!-- Geolocation Advisory Panel / Permissions bar -->
     <div id="location-notice" class="bg-amber-50 border-b border-amber-100 hidden">
       <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-amber-900 font-medium">
         <div class="flex items-center space-x-2">
-          <span class="flex h-2 w-2 relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-          </span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
           <span id="location-notice-text">Location details set to Nagpur Zero-Mile center. Share live GPS for real-time proximity.</span>
         </div>
-        <button onclick="syncUserLocation()" class="inline-flex items-center space-x-1.5 py-1 px-3 bg-white border border-amber-200 text-nagpur-800 hover:bg-amber-100/50 rounded-lg font-bold transition-all">
-          <i data-lucide="locate" class="w-3.5 h-3.5 text-nagpur-orange"></i>
+        <button onclick="syncUserLocation()" class="inline-flex items-center space-x-1.5 py-1 px-3 bg-white border border-amber-200 text-nagpur-800 rounded-lg font-bold">
           <span>Share Live GPS Location</span>
         </button>
       </div>
     </div>
 
-    <!-- Live Status Metadata KPI Bar -->
     <div class="bg-white border-b border-slate-100 py-3.5 px-4 z-10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        
-        <!-- Live status counters -->
-        <div class="flex flex-wrap items-center gap-3 md:gap-5 text-xs text-slate-500 w-full md:w-auto">
+        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 w-full md:w-auto">
           <div class="flex items-center space-x-1.5 bg-nagpur-50 border border-nagpur-100 px-3 py-1 rounded-xl">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="font-extrabold text-[#112261]">Dynamic data-sync connected</span>
+            <span class="font-extrabold text-[#112261]">Data-Sync Connected</span>
           </div>
-          <div class="h-4 w-px bg-slate-200 hidden sm:inline"></div>
-          <div class="flex items-center space-x-4">
-            <div>Verified partners: <span id="stat-count" class="font-extrabold text-slate-900">...</span></div>
+          <div class="flex items-center space-x-4 ml-2">
+            <div>Partners: <span id="stat-count" class="font-extrabold text-slate-900">...</span></div>
             <div>Min Rate: <span id="stat-min-price" class="font-extrabold text-emerald-600">...</span></div>
             <div>Avg Rating: <span id="stat-avg-rating" class="font-extrabold text-amber-500">...</span></div>
           </div>
         </div>
 
-        <!-- Local search filter utility -->
         <div class="flex items-center space-x-2.5 w-full md:w-auto">
           <span class="text-xs font-bold text-slate-400 whitespace-nowrap">Local Search:</span>
           <div class="relative w-full md:w-64">
-            <input type="text" id="directory-search-input" oninput="handleInstantSearch(this.value)" placeholder="Search Sadar, Dharampeth, Manish Nagar..." class="w-full text-xs py-2 pl-9 pr-8 text-slate-800 placeholder-slate-400 bg-slate-50 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-nagpur-600 focus:outline-none rounded-xl transition-all shadow-inner">
-            <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400"></i>
-            <button id="clear-search-btn" onclick="clearLocalSearch()" class="hidden absolute right-3 top-2 text-slate-400 hover:text-slate-600">
-              <i data-lucide="x" class="w-3.5 h-3.5"></i>
-            </button>
+            <input type="text" id="directory-search-input" oninput="handleInstantSearch(this.value)" placeholder="Search Sadar, Dharampeth, Manish Nagar..." class="w-full text-xs py-2 pl-4 pr-8 text-slate-800 bg-slate-50 border border-slate-200 focus:border-nagpur-600 focus:outline-none rounded-xl transition-all">
+            <button id="clear-search-btn" onclick="clearLocalSearch()" class="hidden absolute right-3 top-2 text-slate-400 hover:text-slate-600">✕</button>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- Nagpur Hero Introduction Showcase -->
     <section class="bg-white border-b border-slate-100 relative overflow-hidden py-10">
-      <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-30"></div>
-      <div class="absolute -top-16 -right-16 w-80 h-80 rounded-full bg-gradient-to-br from-nagpur-50 to-indigo-100/20 blur-3xl z-0"></div>
-      
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          <!-- Text Introduction -->
           <div class="lg:col-span-7 text-center lg:text-left">
-            <div class="inline-flex items-center space-x-1.5 px-3 py-1 bg-nagpur-orangeLight text-nagpur-orange text-xs font-bold rounded-full mb-4 ring-1 ring-orange-200">
-              <i data-lucide="sparkles" class="w-3 h-3"></i>
+            <div class="inline-flex items-center px-3 py-1 bg-nagpur-orangeLight text-nagpur-orange text-xs font-bold rounded-full mb-4">
               <span>High-Trust Nagpur Directory Datastore</span>
             </div>
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black font-display text-slate-900 leading-tight">
-              Premium Car Care & Wash Stations<br>
-              <span class="text-nagpur-700">Right at Your Nagpur Address</span>
+              Premium Car Care Stations<br><span class="text-nagpur-700">Right at Your Nagpur Address</span>
             </h2>
-            <p class="mt-4 text-slate-500 max-w-xl text-sm leading-relaxed">
-              Find reliable foaming studios in Sadar or professional doorstep detailers carrying pressurized foam generators on mobile vans. We map all distances relative to Nagpur Zero-Mile or your custom GPS position.
+            <p class="mt-4 text-slate-500 text-sm leading-relaxed">
+              Find reliable foaming studios or doorstep detailers carrying specialized gear directly to your location. We map all distances relative to Nagpur Zero-Mile.
             </p>
-            
-            <div class="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start">
-              <div class="flex items-center space-x-2 bg-slate-50 rounded-xl px-3.5 py-1.5 border border-slate-100">
-                <span class="text-lg font-bold text-nagpur-orange">21.1458° N</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase leading-none border-l pl-2 border-slate-200">Central Nagpur <br>MAPPED CORE</span>
-              </div>
-              <div class="flex items-center space-x-2 bg-slate-50 rounded-xl px-3.5 py-1.5 border border-slate-100">
-                <span class="text-lg font-bold text-emerald-600" id="hero-starting-price">₹199</span>
-                <span class="text-[10px] text-slate-400 font-bold uppercase leading-none border-l pl-2 border-slate-200">Minimum <br>STARTING RATE</span>
-              </div>
-            </div>
           </div>
 
-          <!-- Quick Filters Card -->
-          <div class="lg:col-span-5 bg-gradient-to-tr from-[#0e1c4a] to-[#1e293b] text-white rounded-3xl p-6 shadow-premium relative">
-            <h3 class="text-xs font-bold font-mono text-nagpur-300 tracking-wider uppercase mb-3.5 flex items-center">
-              <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 mr-1.5 text-nagpur-orange"></i>
-              Filter Service Types
-            </h3>
-
-            <div class="space-y-3.5">
-              <div class="grid grid-cols-2 gap-3">
-                
-                <!-- Stationed Shops Choice -->
-                <button id="filter-shop-btn" onclick="toggleLocalFilter('shop')" class="group relative flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white/5 border-2 border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all duration-200" data-active="true">
-                  <div class="w-9 h-9 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center mb-1.5">
-                    <i data-lucide="store" class="w-4.5 h-4.5 text-white"></i>
-                  </div>
-                  <span class="text-xs font-bold leading-none">🏬 Stations</span>
-                  <span class="text-[9px] text-slate-300 mt-1">Physical Studios</span>
-                  <div id="filter-dot-shop" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400"></div>
-                </button>
-
-                <!-- Doorstep Services Choice -->
-                <button id="filter-home-btn" onclick="toggleLocalFilter('home')" class="group relative flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white/5 border-2 border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all duration-200" data-active="true">
-                  <div class="w-9 h-9 rounded-full bg-white/10 group-hover:bg-white/20 flex items-center justify-center mb-1.5">
-                    <i data-lucide="truck" class="w-4.5 h-4.5 text-white"></i>
-                  </div>
-                  <span class="text-xs font-bold leading-none">🏡 Doorstep</span>
-                  <span class="text-[9px] text-slate-300 mt-1">Mobile Vans</span>
-                  <div id="filter-dot-home" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400"></div>
-                </button>
-
-              </div>
-              
-              <div class="pt-1 text-center">
-                <button onclick="resetDirectoryState()" class="text-[11px] text-nagpur-300 hover:text-white underline font-semibold transition-colors">
-                  Reset Filters & View All Mapped Shops
-                </button>
-              </div>
+          <div class="lg:col-span-5 bg-gradient-to-tr from-[#0e1c4a] to-[#1e293b] text-white rounded-3xl p-6 shadow-premium">
+            <h3 class="text-xs font-bold text-nagpur-300 tracking-wider uppercase mb-3.5">Filter Service Types</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <button id="filter-shop-btn" onclick="toggleLocalFilter('shop')" class="relative p-3.5 rounded-2xl bg-white/5 border border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all">
+                <span class="text-xs font-bold block">🏬 Stations</span>
+                <span class="text-[9px] text-slate-300">Physical Shops</span>
+                <div id="filter-dot-shop" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400"></div>
+              </button>
+              <button id="filter-home-btn" onclick="toggleLocalFilter('home')" class="relative p-3.5 rounded-2xl bg-white/5 border border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all">
+                <span class="text-xs font-bold block">🏡 Doorstep</span>
+                <span class="text-[9px] text-slate-300">Mobile Vans</span>
+                <div id="filter-dot-home" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400"></div>
+              </button>
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Main Directory Grid -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
-      <!-- List View: Left Side (7 columns) -->
       <section class="lg:col-span-7 flex flex-col space-y-5">
-        
-        <!-- Header controls for sorting -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
           <div>
             <h3 class="text-lg font-extrabold text-slate-900 font-display flex items-center">
               <span>Nagpur Care Directory</span>
-              <span class="ml-2 text-xs font-mono font-medium text-slate-400" id="results-count-tracker">...</span>
+              <span class="ml-2 text-xs font-medium text-slate-400" id="results-count-tracker">...</span>
             </h3>
-            <p class="text-xs text-slate-400 mt-0.5">Calculated relative to your current coordinates</p>
           </div>
-
-          <!-- Sorting Selector Segment -->
-          <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 text-xs font-bold text-slate-600 self-start sm:self-auto">
-            <button id="sort-nearest-btn" onclick="setDirectorySort('nearest')" class="px-3.5 py-1.8 rounded-lg flex items-center space-x-1 bg-white text-slate-950 shadow-sm transition-all">
-              <i data-lucide="navigation" class="w-3.5 h-3.5 text-nagpur-orange"></i>
-              <span>Nearest</span>
-            </button>
-            <button id="sort-price-btn" onclick="setDirectorySort('price')" class="px-3.5 py-1.8 rounded-lg flex items-center space-x-1 hover:text-slate-950 hover:bg-white/40 transition-all">
-              <i data-lucide="indian-rupee" class="w-3.5 h-3.5 text-slate-400"></i>
-              <span>Lowest Price</span>
-            </button>
+          <div class="bg-slate-100 p-1 rounded-xl flex items-center space-x-1 text-xs font-bold text-slate-600">
+            <button id="sort-nearest-btn" onclick="setDirectorySort('nearest')" class="px-3.5 py-1.5 rounded-lg bg-white text-slate-950 shadow-sm transition-all">Nearest</button>
+            <button id="sort-price-btn" onclick="setDirectorySort('price')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-950 transition-all">Lowest Price</button>
           </div>
         </div>
-
-        <!-- Scrollable Cards listings container -->
-        <div id="listings-wrapper" class="space-y-4">
-          <!-- Dynamic Nagpur Cards appends here via JS -->
-        </div>
-
+        <div id="listings-wrapper" class="space-y-4"></div>
       </section>
 
-      <!-- Map View: Right Side (5 columns) -->
       <section class="lg:col-span-5 flex flex-col space-y-4">
-        <div class="flex items-center justify-between">
-          <h4 class="text-sm font-extrabold font-display text-slate-900 flex items-center space-x-2">
-            <i data-lucide="map" class="w-4 h-4 text-nagpur-700"></i>
-            <span>Interactive Mapped Directory</span>
-          </h4>
-          <span class="text-xs text-slate-400 font-semibold font-mono">Core: Zero Mile, Nagpur</span>
-        </div>
-
-        <div class="sticky top-24 w-full">
-          <div class="relative bg-white border border-slate-150 rounded-2xl overflow-hidden shadow-premium p-1.5">
-            <div id="map" class="w-full h-[400px] lg:h-[580px] rounded-xl z-10 border border-slate-100"></div>
-            
-            <!-- Map Controls Overlays -->
-            <div class="absolute bottom-5 left-5 right-5 z-20 pointer-events-none flex items-center justify-between">
-              <!-- Current GPS reference overlay HUD -->
-              <div class="pointer-events-auto bg-slate-950/95 text-white backdrop-blur shadow-premium rounded-xl px-3 py-2 border border-slate-800 text-xs flex items-center space-x-2">
-                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
-                <div>
-                  <span class="text-[9px] text-slate-400 block font-bold leading-none uppercase tracking-wide">Proximity Guard</span>
-                  <span id="reference-info" class="text-slate-200 font-extrabold text-[10px] leading-none">Zero Mile Center</span>
-                </div>
-              </div>
-              
-              <!-- Locate Action Trigger -->
-              <button onclick="syncUserLocation()" class="pointer-events-auto w-10 h-10 rounded-xl bg-white hover:bg-slate-50 text-slate-700 shadow-premium flex items-center justify-center border border-slate-100 transition-transform active:scale-95" title="Acquire GPS Location">
-                <i data-lucide="locate-fixed" class="w-5 h-5 text-nagpur-700"></i>
-              </button>
-            </div>
-
-            <!-- Floating badge -->
-            <div class="absolute top-5 right-5 z-20 pointer-events-none">
-              <div id="connection-mode-badge" class="bg-nagpur-700 text-white rounded-lg px-2.5 py-1 text-[10px] font-bold font-mono tracking-wide shadow-sm">
-                LIVE REMOTE SYNC
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="map" class="w-full h-[400px] lg:h-[580px] rounded-2xl shadow-premium border border-slate-100"></div>
       </section>
-
     </main>
 
-    <!-- Side-Drawer UI: Interactive Shop Data Generator Utility Panel -->
-    <div id="creator-drawer" class="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl border-l border-slate-150 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-full ring-4 ring-slate-900/5">
-      
-      <!-- Drawer Header -->
-      <div class="p-5 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-nagpur-orange flex items-center justify-center text-white">
-            <i data-lucide="wrench" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-md font-bold font-display leading-tight">Interactive Shop Data Creator</h3>
-            <p class="text-xs text-slate-300">Format custom agencies instantly for GitHub data.json</p>
-          </div>
+    <div id="creator-drawer" class="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl border-l z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col h-full">
+      <div class="p-5 border-b bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-md font-bold font-display">Interactive Shop Data Creator</h3>
+          <p class="text-xs text-slate-300">Format entries easily for data.json</p>
         </div>
-        <button onclick="toggleCreatorDrawer()" class="w-8 h-8 rounded-full hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
+        <button onclick="toggleCreatorDrawer()" class="text-slate-300 hover:text-white text-xl">✕</button>
       </div>
 
-      <!-- Drawer Scroll Body -->
-      <div class="flex-grow overflow-y-auto p-6 space-y-6 custom-scroll bg-[#fafbfd]">
+      <div class="flex-grow overflow-y-auto p-6 space-y-6 bg-[#fafbfd] custom-scroll">
+        <div id="creator-map" class="w-full h-[200px] bg-slate-100 rounded-xl border"></div>
         
-        <!-- Step 1 Info Banner -->
-        <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-xs text-indigo-950 space-y-2">
-          <div class="flex items-center space-x-2 font-bold mb-1">
-            <i data-lucide="info" class="w-4.5 h-4.5 text-nagpur-700"></i>
-            <span>How to use the Admin Creator Map:</span>
-          </div>
-          <p>
-            Scroll or zoom on the mini-picker map below and click anywhere to automatically grab the precise coordinates for the Nagpur wash location. It will automatically populate the Latitude and Longitude fields below!
-          </p>
-        </div>
-
-        <!-- Creator Mini Map Section -->
-        <div class="space-y-2">
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
-            📍 1. Map Location Picker (Click to drop coordinates)
-          </label>
-          <div class="relative rounded-2xl overflow-hidden border border-slate-200">
-            <div id="creator-map" class="w-full h-[220px] bg-slate-100"></div>
-            <div class="absolute bottom-2 right-2 z-20 bg-slate-900/85 text-white select-none px-2.5 py-1 text-[9px] rounded font-semibold font-mono tracking-wide">
-              Center: Nagpur Zero Mile
-            </div>
-          </div>
-          <p class="text-[10px] text-slate-400 text-center italic mt-1">Click anywhere on the mini-map to drop a coordinate marker</p>
-        </div>
-
-        <hr class="border-slate-150">
-
-        <!-- Form Elements -->
         <div class="space-y-4">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
-            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-nagpur-orange"></i>
-            <span>2. Populate Shop Metadata Details</span>
-          </h4>
-
-          <!-- Business Name -->
           <div>
             <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Business Name</label>
-            <input type="text" id="creator-name" placeholder="e.g. Nagpur Prestige Water Spa" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:ring-1 focus:ring-nagpur-600 focus:outline-none">
+            <input type="text" id="creator-name" placeholder="e.g. Nagpur Prestige Water Spa" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
           </div>
-
           <div class="grid grid-cols-2 gap-4">
-            <!-- Service Type Option Dropdown -->
             <div>
               <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Service Type</label>
-              <select id="creator-type" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none" onchange="autoSuggestFolderId()">
+              <select id="creator-type" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none" onchange="autoSuggestFolderId()">
                 <option value="shop">🏬 Stationed Shop</option>
                 <option value="home">🏡 Doorstep Wash</option>
               </select>
             </div>
-
-            <!-- Area Neighborhood -->
             <div>
               <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Area / Neighborhood</label>
-              <input type="text" id="creator-area" placeholder="e.g., Dharampeth" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none" onchange="autoSuggestFolderId()">
+              <input type="text" id="creator-area" placeholder="e.g., Dharampeth" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none" onchange="autoSuggestFolderId()">
             </div>
           </div>
-
-          <!-- Pricing Inputs -->
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Hatchback Rate (₹)</label>
-              <input type="number" id="creator-price-starter" placeholder="e.g., 299" value="299" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none">
+              <input type="number" id="creator-price-starter" value="299" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">SUV Starting Rate (₹)</label>
-              <input type="number" id="creator-price-suv" placeholder="e.g., 449" value="449" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none">
+              <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">SUV Rate (₹)</label>
+              <input type="number" id="creator-price-suv" value="449" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
             </div>
           </div>
-
-          <!-- Contact phone and full address -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Phone Number</label>
-              <input type="text" id="creator-phone" placeholder="e.g. +91 91122 00099" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none">
+              <input type="text" id="creator-phone" placeholder="+91 91122 00099" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Key Specialty / Offer</label>
-              <input type="text" id="creator-specialty" placeholder="e.g. Ceramic detailers, quick-dry active foam" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none">
+              <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Specialty</label>
+              <input type="text" id="creator-specialty" placeholder="Active foam wash, polishing" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
             </div>
           </div>
-
           <div>
             <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Full Nagpur Address</label>
-            <input type="text" id="creator-address" placeholder="e.g. Plot No. 12, West High Court Road, Dharampeth, Nagpur, Maharashtra 440010" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl focus:border-nagpur-600 focus:outline-none">
+            <input type="text" id="creator-address" placeholder="Plot No. 12, Dharampeth, Nagpur" class="w-full text-xs px-3.5 py-2.5 border bg-white rounded-xl focus:outline-none">
           </div>
-
-          <!-- Latitude Longitude auto-coordinate display -->
-          <div class="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-            <div>
-              <label class="block text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-1">Lat (Populates via click)</label>
-              <input type="text" id="creator-lat" placeholder="Click mini-map" class="w-full text-xs font-mono px-3 py-2 border border-slate-200 bg-slate-100/50 rounded-lg focus:outline-none" readonly>
-            </div>
-            <div>
-              <label class="block text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-1">Lng (Populates via click)</label>
-              <input type="text" id="creator-lng" placeholder="Click mini-map" class="w-full text-xs font-mono px-3 py-2 border border-slate-200 bg-slate-100/50 rounded-lg focus:outline-none" readonly>
-            </div>
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="creator-lat" placeholder="Click map for Latitude" class="w-full text-xs px-3 py-2 border bg-slate-100 rounded-lg focus:outline-none" readonly>
+            <input type="text" id="creator-lng" placeholder="Click map for Longitude" class="w-full text-xs px-3 py-2 border bg-slate-100 rounded-lg focus:outline-none" readonly>
           </div>
-
-          <!-- Folder path specifics -->
-          <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100 space-y-3">
-            <span class="text-xs font-bold text-orange-950 block">📁 Image Folder Strategy (Required layout structure)</span>
-            <div class="grid grid-cols-2 gap-3.5">
-              <div>
-                <label class="block text-[10px] font-bold text-orange-800 uppercase tracking-wider mb-1">Shop Folder ID Name</label>
-                <input type="text" id="creator-folder-id" oninput="formatFolderIdField()" placeholder="e.g., dharampeth-prestige-clean" class="w-full text-xs font-mono px-3 py-2 border border-orange-200 bg-white rounded-lg focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-[10px] font-bold text-orange-800 uppercase tracking-wider mb-1">Image Filename</label>
-                <input type="text" id="creator-image-filename" placeholder="e.g., wash_front.jpg" value="wash_front.jpg" class="w-full text-xs font-mono px-3 py-2 border border-orange-200 bg-white rounded-lg focus:outline-none">
-              </div>
-            </div>
-            
-            <div class="text-[10px] text-slate-500 space-y-1">
-              <span>Your resolved structural layout image location path will be rendered as:</span>
-              <span id="creator-resolved-preview-path" class="block font-mono bg-white border border-slate-200 px-2 py-1 rounded text-orange-700 font-bold overflow-x-auto text-[9px]">
-                images/dharampeth-prestige-clean/wash_front.jpg
-              </span>
-            </div>
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="creator-folder-id" placeholder="Folder Name ID" class="w-full text-xs px-3 py-2 border bg-white rounded-lg focus:outline-none">
+            <input type="text" id="creator-image-filename" value="wash_front.jpg" class="w-full text-xs px-3 py-2 border bg-white rounded-lg focus:outline-none">
           </div>
         </div>
 
-        <hr class="border-slate-150">
-
-        <!-- Compilation Exporter area -->
-        <div class="space-y-3">
-          <button onclick="generateShopSnippetsCode()" class="w-full px-5 py-3 bg-[#0e1c4a] hover:bg-slate-900 text-white font-extrabold text-xs tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center space-x-2">
-            <i data-lucide="code" class="w-4 h-4 text-emerald-400"></i>
-            <span>Generate Shop Data Code Snippet</span>
-          </button>
-          
-          <div id="exporter-block" class="hidden space-y-2 fade-in">
-            <label class="block text-xs font-bold uppercase tracking-wider text-[#1a51ff]">
-              📋 Perfect JSON Object Code Snippet (Paste inside data.json)
-            </label>
-            <textarea id="creator-json-textarea" class="w-full h-44 p-3.5 bg-slate-950 text-emerald-400 font-mono text-[10px] leading-relaxed rounded-2xl border border-slate-800 focus:outline-none custom-scroll select-all" readonly></textarea>
-            
-            <button onclick="copyCreatorJsonToClipboard()" class="w-full px-4 py-2.5 bg-[#16a34a] hover:bg-emerald-700 text-white rounded-xl text-xs font-bold tracking-wide shadow-md transition-all flex items-center justify-center space-x-1.5 focus:outline-none">
-              <i data-lucide="clipboard" id="copy-icon-btn" class="w-4 h-4"></i>
-              <span id="copy-text-btn">Copy JSON Code to Clipboard</span>
-            </button>
-          </div>
+        <button onclick="generateShopSnippetsCode()" class="w-full px-5 py-3 bg-[#0e1c4a] text-white font-bold text-xs rounded-xl">Generate Shop Data Code Snippet</button>
+        
+        <div id="exporter-block" class="hidden space-y-2">
+          <textarea id="creator-json-textarea" class="w-full h-32 p-3 bg-slate-950 text-emerald-400 font-mono text-[10px] rounded-xl focus:outline-none" readonly></textarea>
+          <button onclick="copyCreatorJsonToClipboard()" class="w-full px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">Copy JSON Code</button>
         </div>
-
       </div>
 
-      <!-- Drawer Footer Actions -->
-      <div class="p-5 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-        <button onclick="toggleCreatorDrawer()" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-100 transition-colors">
-          Cancel Tool
-        </button>
-        <button onclick="simulateAddFromCreator()" class="px-5 py-2.5 bg-nagpur-orange hover:bg-nagpur-orange/90 text-white rounded-xl text-xs font-bold hover:bg-nagpur-orange shadow-md transition-all active:scale-95">
-          Verify & Live Add on Preview Map
-        </button>
+      <div class="p-5 border-t bg-slate-50 flex items-center justify-between">
+        <button onclick="toggleCreatorDrawer()" class="px-5 py-2.5 bg-white border text-slate-700 rounded-xl text-xs">Cancel</button>
+        <button onclick="simulateAddFromCreator()" class="px-5 py-2.5 bg-nagpur-orange text-white rounded-xl text-xs font-bold">Verify & Add to Map</button>
       </div>
-
     </div>
 
-    <!-- Nagpur Footer Section -->
-    <footer class="bg-slate-900 text-slate-400 py-10 mt-auto border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center justify-between text-xs">
-        <div>
-          <span class="font-extrabold text-white font-display text-base">NagpurCarWash™ Live Portal</span>
-          <p class="mt-2 text-slate-500 max-w-sm">
-            High-trust localized directory of verified car care detailers, dual-action detailing stations, and certified doorstep wash operators in Nagpur City. Verified continuously.
-          </p>
-        </div>
-        <div class="flex flex-wrap items-center gap-6 md:justify-end text-slate-400 font-medium">
-          <span class="text-nagpur-orange">Orange City Car Care Platform</span>
-          <span class="hover:text-white cursor-pointer" onclick="resetDirectoryState()">Zero Mile Center</span>
-          <span class="hover:text-white cursor-pointer" onclick="toggleCreatorDrawer()">Admin Data Tool</span>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Leaflet.js Mapping Layer CDN -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-    <!-- Lucide Icon Generator CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Core App Logic -->
     <script>
-      // ==========================================
-      // 1. DATA HOOK AND FALLBACK BACKUP PLATFORM
-      // ==========================================
       let carWashData = [];
-
-      // Robust fallback array if data.json fetch fails or is running locally under CORS
       const offlineFallbackWashData = [
-        {
-          "id": 1,
-          "name": "Nagpur Detailers & Ceramic Hub",
-          "type": "shop",
-          "startingPrice": 399,
-          "startingPriceSUV": 549,
-          "rating": 4.8,
-          "reviews": 142,
-          "address": "32, West High Court Road, Dharampeth, Nagpur, Maharashtra 440010",
-          "phone": "+91 98765 43210",
-          "lat": 21.1422,
-          "lng": 79.0682,
-          "specialty": "Premium eco-friendly ceramic detailers, dual-action machine polishing, gloss wax finishing",
-          "nagpurArea": "Dharampeth",
-          "verified": true,
-          "shopFolderId": "nagpur-detailers-ceramic-hub-1",
-          "imageFilename": "studio_front.jpg"
-        },
-        {
-          "id": 2,
-          "name": "Orange City Doorstep Cleaners",
-          "type": "home",
-          "startingPrice": 249,
-          "startingPriceSUV": 399,
-          "rating": 4.9,
-          "reviews": 95,
-          "address": "Plot No. 12, Manish Nagar Main Road, Nagpur, Maharashtra 440015",
-          "phone": "+91 87654 32109",
-          "lat": 21.0965,
-          "lng": 79.0855,
-          "specialty": "Doorstep high-pressure foam wash, water & power self-contained mobile vans",
-          "nagpurArea": "Manish Nagar",
-          "verified": true,
-          "shopFolderId": "orange-city-doorstep-cleaners-2",
-          "imageFilename": "van_setup.jpg"
-        },
-        {
-          "id": 3,
-          "name": "Sadar Express Steam & Wash",
-          "type": "shop",
-          "startingPrice": 299,
-          "startingPriceSUV": 449,
-          "rating": 4.5,
-          "reviews": 310,
-          "address": "Mount Road, Opposite LIC Building, Sadar, Nagpur, Maharashtra 440001",
-          "phone": "+91 76543 21098",
-          "lat": 21.1585,
-          "lng": 79.0812,
-          "specialty": "Full interior steam sanitization, high-power undercarriage cleaning, quick 20-min cycle",
-          "nagpurArea": "Sadar",
-          "verified": true,
-          "shopFolderId": "sadar-express-steam-wash-3",
-          "imageFilename": "steam_bay.jpg"
-        },
-        {
-          "id": 4,
-          "name": "Ramdaspeth Professional Detailers",
-          "type": "home",
-          "startingPrice": 499,
-          "startingPriceSUV": 699,
-          "rating": 5.0,
-          "reviews": 64,
-          "address": "Central Bazaar Road, near Canal road, Ramdaspeth, Nagpur, Maharashtra 440010",
-          "phone": "+91 95432 10987",
-          "lat": 21.1325,
-          "lng": 79.0745,
-          "specialty": "Eco-friendly premium waterless polymer wash, deep dashboard conditioning & leather polish",
-          "nagpurArea": "Ramdaspeth",
-          "verified": true,
-          "shopFolderId": "ramdaspeth-professional-detailers-4",
-          "imageFilename": "doorstep_wash.jpg"
-        },
-        {
-          "id": 5,
-          "name": "Express Foam Station",
-          "type": "shop",
-          "startingPrice": 199,
-          "startingPriceSUV": 295,
-          "rating": 4.3,
-          "reviews": 185,
-          "address": "Kamptee Road, near Gurudwara, Nagpur, Maharashtra 440004",
-          "phone": "+91 91234 56789",
-          "lat": 21.1782,
-          "lng": 79.1021,
-          "specialty": "Fully automated touchless active foam arch, super fast wash & dry with microfibre buff",
-          "nagpurArea": "Kamptee Road",
-          "verified": false,
-          "shopFolderId": "express-foam-station-5",
-          "imageFilename": "foam_spray.jpg"
-        }
+        {"id":1,"name":"Nagpur Detailers & Ceramic Hub","type":"shop","startingPrice":399,"startingPriceSUV":549,"rating":4.8,"reviews":142,"address":"32, West High Court Road, Dharampeth, Nagpur","phone":"+91 98765 43210","lat":21.1422,"lng":79.0682,"specialty":"Premium ceramic detailers, machine polishing","nagpurArea":"Dharampeth","verified":true,"shopFolderId":"nagpur-detailers-ceramic-hub-1","imageFilename":"studio_front.jpg"},
+        {"id":2,"name":"Orange City Doorstep Cleaners","type":"home","startingPrice":249,"startingPriceSUV":399,"rating":4.9,"reviews":95,"address":"Plot No. 12, Manish Nagar, Nagpur","phone":"+91 87654 32109","lat":21.0965,"lng":79.0855,"specialty":"Doorstep high-pressure foam wash vans","nagpurArea":"Manish Nagar","verified":true,"shopFolderId":"orange-city-doorstep-cleaners-2","imageFilename":"van_setup.jpg"},
+        {"id":3,"name":"Sadar Express Steam & Wash","type":"shop","startingPrice":299,"startingPriceSUV":449,"rating":4.5,"reviews":310,"address":"Mount Road, Sadar, Nagpur","phone":"+91 76543 21098","lat":21.1585,"lng":79.0812,"specialty":"Full interior steam sanitization, undercarriage cleaning","nagpurArea":"Sadar","verified":true,"shopFolderId":"sadar-express-steam-wash-3","imageFilename":"steam_bay.jpg"}
       ];
 
-      // ==========================================
-      // 2. RUNTIME AND FILTERS STATE
-      // ==========================================
-      let mapObj = null;
-      let creatorMapObj = null;
-      let leafletMarkersGroup = null;
-      let userGpsMarker = null;
-      let creatorTemporaryMarker = null;
-
-      // Nagpur Zero Mile coordinates as reference target marker
+      let mapObj = null, creatorMapObj = null, leafletMarkersGroup = null, userGpsMarker = null, creatorTemporaryMarker = null;
       const nagpurCenter = [21.1458, 79.0882];
+      let userCurrentLocation = { lat: nagpurCenter[0], lng: nagpurCenter[1] };
+      let currentFilters = { shop: true, home: true, searchQuery: '' };
+      let currentSortOption = 'nearest', focusedItemCardId = null;
+      const localUploadedPhotos = {};
 
-      let userCurrentLocation = {
-        lat: nagpurCenter[0],
-        lng: nagpurCenter[1],
-        isGpsLive: false
-      };
-
-      let currentFilters = {
-        shop: true,
-        home: true,
-        searchQuery: ''
-      };
-
-      let currentSortOption = 'nearest'; // 'nearest' or 'price'
-      let focusedItemCardId = null;
-
-      // Local loaded photos
-      const localUploadedPhotos = {}; // carwashId: [base64_strings]
-
-      // ==========================================
-      // 3. HAVERSINE ACCURACY DISTANCE CALCULATION
-      // ==========================================
       function computeHaversineDistanceKm(lat1, lon1, lat2, lon2) {
-        if (!lat1 || !lon1 || !lat2 || !lon2) return 0;
-        const R = 6371; // Earth's Radius
-        const deltaLat = (lat2 - lat1) * Math.PI / 180;
-        const deltaLon = (lon2 - lon1) * Math.PI / 180;
-        
-        const calc = 
-          Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
-          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-          Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
-          
-        const arc = 2 * Math.atan2(Math.sqrt(calc), Math.sqrt(1 - calc));
-        return parseFloat((R * arc).toFixed(1)); 
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+        return parseFloat((R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1));
       }
 
-      // ==========================================
-      // 4. MAP VIEWS INITIALIZATION
-      // ==========================================
       function setupLeafletMaps() {
-        // Main directory interactive map centered on Central Nagpur
-        mapObj = L.map('map', {
-          zoomControl: false,
-          attributionControl: true
-        }).setView([userCurrentLocation.lat, userCurrentLocation.lng], 13);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          maxZoom: 20
-        }).addTo(mapObj);
-
+        mapObj = L.map('map', { zoomControl: false }).setView([userCurrentLocation.lat, userCurrentLocation.lng], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(mapObj);
         leafletMarkersGroup = L.layerGroup().addTo(mapObj);
 
-        // Creator tool interactive mini leaflet map (picker) centered on Zero Mile
-        creatorMapObj = L.map('creator-map', {
-          zoomControl: true,
-          attributionControl: false
-        }).setView(nagpurCenter, 12);
+        creatorMapObj = L.map('creator-map', { zoomControl: true }).setView(nagpurCenter, 12);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(creatorMapObj);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          maxZoom: 20
-        }).addTo(creatorMapObj);
-
-        // Map Click Coordinator listener for Creator Picker Tool
         creatorMapObj.on('click', function(e) {
-          const clickedLat = e.latlng.lat;
-          const clickedLng = e.latlng.lng;
-          
-          document.getElementById('creator-lat').value = clickedLat.toFixed(5);
-          document.getElementById('creator-lng').value = clickedLng.toFixed(5);
-
-          // Update/place temporary marker pin with custom color
-          if (creatorTemporaryMarker) {
-            creatorTemporaryMarker.setLatLng(e.latlng);
-          } else {
-            const creatorMarkerIcon = L.divIcon({
-              html: `
-                <div class="flex flex-col items-center">
-                  <div class="px-2 py-0.5 bg-slate-900 border border-slate-800 text-white text-[9px] font-black rounded shadow-md whitespace-nowrap mb-1">
-                    NEW SHOP COORDS 🎯
-                  </div>
-                  <div class="w-6 h-6 rounded-full border-2 border-white bg-nagpur-orange flex items-center justify-center shadow-lg transform rotate-45"></div>
-                </div>
-              `,
-              className: 'admin-marker',
-              iconSize: [40, 40],
-              iconAnchor: [20, 20]
-            });
-            creatorTemporaryMarker = L.marker(e.latlng, { icon: creatorMarkerIcon }).addTo(creatorMapObj);
-          }
-          
-          // Fly centered
+          document.getElementById('creator-lat').value = e.latlng.lat.toFixed(5);
+          document.getElementById('creator-lng').value = e.latlng.lng.toFixed(5);
+          if (creatorTemporaryMarker) { creatorTemporaryMarker.setLatLng(e.latlng); } 
+          else { creatorTemporaryMarker = L.marker(e.latlng).addTo(creatorMapObj); }
           creatorMapObj.panTo(e.latlng);
         });
 
-        // Trigger user GPS location sync on load
         syncUserLocation();
       }
 
-      function generateMarkerHTML(type, price, isFocused = false) {
-        const markerBgColor = type === 'shop' ? 'bg-nagpur-700 text-white border-nagpur-200' : 'bg-nagpur-orange text-white border-orange-200';
-        const focusRing = isFocused ? 'ring-4 ring-offset-1 ring-nagpur-orange scale-110 z-[600]' : '';
-        const symbolBadge = type === 'shop' ? '🏬' : '🏡';
-        
-        return `
-          <div class="flex flex-col items-center transform transition-all duration-300 ${focusRing}">
-            <div class="px-2 py-0.5 bg-white border border-slate-100 shadow-bold text-[10px] font-extrabold text-slate-900 rounded-md flex items-center space-x-1 whitespace-nowrap mb-1">
-              <span>${symbolBadge}</span>
-              <span class="text-nagpur-700 font-extrabold">₹${price}</span>
-            </div>
-            <div class="w-6 h-6 rounded-full border-2 ${markerBgColor} flex items-center justify-center shadow-lg transform rotate-45">
-              <div class="w-2 h-2 rounded-full bg-white transform -rotate-45"></div>
-            </div>
-            <div class="w-1.5 h-1 bg-slate-400 opacity-40 blur-[1px] rounded-full -mt-0.5 transform scale-x-150"></div>
-          </div>
-        `;
+      function runDatabaseSync(fitCamera = false) {
+        carWashData.forEach(item => {
+          item.distance = computeHaversineDistanceKm(userCurrentLocation.lat, userCurrentLocation.lng, item.lat, item.lng);
+        });
+
+        let filtered = carWashData.filter(node => {
+          const typeMatch = (node.type === 'shop' && currentFilters.shop) || (node.type === 'home' && currentFilters.home);
+          const q = currentFilters.searchQuery.toLowerCase().trim();
+          const searchMatch = !q || node.name.toLowerCase().includes(q) || node.address.toLowerCase().includes(q) || node.nagpurArea.toLowerCase().includes(q);
+          return typeMatch && searchMatch;
+        });
+
+        filtered.sort((a, b) => currentSortOption === 'nearest' ? a.distance - b.distance : a.startingPrice - b.startingPrice);
+
+        populateDirectCards(filtered);
+        plotMarkers(filtered);
+        statsRecalculations(filtered);
+        if (fitCamera) fitPointsCameraView(filtered);
       }
 
-      // Render markers to directory map
-      function plotNagpurMarkersOnMap(data) {
+      function plotMarkers(data) {
         leafletMarkersGroup.clearLayers();
-
         data.forEach(wash => {
-          const isFocusedNode = focusedItemCardId === wash.id;
-          const leafIcon = L.divIcon({
-            html: generateMarkerHTML(wash.type, wash.startingPrice, isFocusedNode),
-            className: 'directory-pin-marker',
-            iconSize: [55, 55],
-            iconAnchor: [27, 45]
+          const icon = L.divIcon({
+            html: `<div class="p-1 bg-white border rounded text-xs font-bold text-slate-900 shadow">${wash.type==='shop'?'🏬':'🏡'} ₹${wash.startingPrice}</div>`,
+            className: 'custom-pin', iconSize: [50, 30]
           });
-
-          const mapMarker = L.marker([wash.lat, wash.lng], { icon: leafIcon });
-
-          const badgeHTML = wash.type === 'shop'
-            ? `<span class="px-2 py-0.5 text-[8px] font-bold rounded bg-indigo-50 border border-indigo-100 text-nagpur-700">Nagpur Stationed Shop 🏬</span>`
-            : `<span class="px-2 py-0.5 text-[8px] font-bold rounded bg-orange-50 border border-orange-100 text-nagpur-orange">Doorstep Cleaning Unit 🏡</span>`;
-
-          const verifiedTag = wash.verified 
-            ? `<span class="px-2 py-0.5 text-[8px] font-bold rounded bg-emerald-50 border border-emerald-150 text-emerald-700">✓ Verified</span>`
-            : '<span class="px-2 py-0.5 text-[8px] font-bold rounded bg-slate-50 border border-slate-150 text-slate-500">Community listed</span>';
-
-          const resolvedPath = "images/" + wash.shopFolderId + "/" + wash.imageFilename;
-
-          const distanceString = !wash.distance ? '' : `
-            <div class="flex items-center space-x-1 text-[10px] text-slate-500 mt-1 font-semibold">
-              <i data-lucide="navigation" class="w-3.5 h-3.5 text-nagpur-orange"></i>
-              <span>${wash.distance} km from reference location</span>
-            </div>
-          `;
-
-          const popupContent = `
-            <div class="p-1 space-y-2 max-w-xs">
-              <div class="flex items-center space-x-1.5 flex-wrap gap-1">
-                ${badgeHTML}
-                ${verifiedTag}
-              </div>
-              <div class="flex gap-2">
-                <img src="${resolvedPath}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1520340356584-f9917d1ecc6f?auto=format&fit=crop&w=150&q=80';" class="w-12 h-12 object-cover rounded-lg border border-slate-100 flex-shrink-0">
-                <div>
-                  <h4 class="text-xs font-bold leading-tight text-[#0e1c4a] mt-0.5">${wash.name}</h4>
-                  <p class="text-[9px] text-slate-400 mt-0.5 line-clamp-1">${wash.address}</p>
-                </div>
-              </div>
-              ${distanceString}
-              <div class="h-px bg-slate-100"></div>
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <span class="text-[8px] text-slate-400 block font-mono">HATCHBACK STARTS AT</span>
-                  <span class="text-sm font-extrabold text-[#1a51ff] leading-none">₹${wash.startingPrice}</span>
-                </div>
-                <a href="tel:${wash.phone}" class="flex items-center space-x-1 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-[9px] font-bold text-white transition-all whitespace-nowrap focus:outline-none">
-                  <span>Call Operator</span>
-                </a>
-              </div>
-            </div>
-          `;
-
-          mapMarker.bindPopup(popupContent);
-
-          mapMarker.on('click', () => {
-            selectCardHighlight(wash.id, false);
-          });
-
-          leafletMarkersGroup.addLayer(mapMarker);
+          const marker = L.marker([wash.lat, wash.lng], { icon: icon });
+          marker.bindPopup(`<b class="text-xs">${wash.name}</b><br><span class="text-[10px]">${wash.address}</span>`);
+          leafletMarkersGroup.addLayer(marker);
         });
 
-        // Trigger focus popup if highlighted
-        if (focusedItemCardId) {
-          const match = data.find(w => w.id === focusedItemCardId);
-          if (match) {
-            leafletMarkersGroup.eachLayer(layer => {
-              if (layer.getLatLng().lat === match.lat && layer.getLatLng().lng === match.lng) {
-                layer.openPopup();
-              }
-            });
-          }
-        }
+        if (userGpsMarker) userGpsMarker.remove();
+        userGpsMarker = L.marker([userCurrentLocation.lat, userCurrentLocation.lng]).addTo(mapObj).bindPopup("Your Location");
       }
 
-      function plotUserGpsTargetMarker() {
-        if (userGpsMarker) {
-          userGpsMarker.remove();
+      function populateDirectCards(shops) {
+        const container = document.getElementById('listings-wrapper');
+        container.innerHTML = '';
+        if(shops.length === 0) {
+          container.innerHTML = `<div class="p-6 bg-white rounded-xl text-center text-xs text-slate-400">No matching car wash stations found in Nagpur data records.</div>`;
+          return;
         }
 
-        const userGpsIcon = L.divIcon({
-          html: `<div class="user-pulse-marker w-2.5 h-2.5 rounded-full bg-nagpur-500 border-2 border-white shadow-lg"></div>`,
-          className: 'user-pulse-layer',
-          iconSize: [18, 18],
-          iconAnchor: [9, 9]
+        shops.forEach(wash => {
+          const customPreviews = localUploadedPhotos[wash.id] || [];
+          let imageTrack = `<img src="images/${wash.shopFolderId}/${wash.imageFilename}" onerror="this.src='https://images.unsplash.com/photo-1520340356584-f9917d1ecc6f?w=400';" class="w-full h-24 object-cover rounded-xl border">`;
+          
+          customPreviews.forEach(b64 => {
+            imageTrack += `<img src="${b64}" class="w-full h-24 object-cover rounded-xl border">`;
+          });
+
+          container.innerHTML += `
+            <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-[10px] uppercase font-bold tracking-wider text-nagpur-600">${wash.type === 'shop' ? '🏬 Physical Station' : '🏡 Doorstep Unit'}</span>
+                  <h4 class="text-sm font-bold text-slate-900 mt-0.5">${wash.name}</h4>
+                  <p class="text-xs text-slate-400">${wash.address}</p>
+                </div>
+                <div class="text-right">
+                  <span class="text-base font-black text-[#1e51ff]">₹${wash.startingPrice}</span>
+                  <p class="text-[9px] text-slate-400 font-bold uppercase">SUV: ₹${wash.startingPriceSUV}</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-4 gap-2">${imageTrack}
+                <label class="h-24 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-slate-400 bg-slate-50 cursor-pointer">
+                  <span class="text-[10px] font-bold">Add Snap</span>
+                  <input type="file" accept="image/*" class="hidden" onchange="handleLivePhotoUpload(event, ${wash.id})">
+                </label>
+              </div>
+              <div class="flex justify-between items-center text-xs pt-2 border-t">
+                <span class="bg-slate-100 text-slate-600 font-bold px-2.5 py-0.5 rounded-lg">${wash.distance} km away</span>
+                <a href="tel:${wash.phone}" class="px-4 py-1.5 bg-emerald-600 text-white rounded-xl font-bold">Call Now</a>
+              </div>
+            </div>
+          `;
         });
-
-        userGpsMarker = L.marker([userCurrentLocation.lat, userCurrentLocation.lng], { icon: userGpsIcon }).addTo(mapObj);
-        userGpsMarker.bindPopup(`<div class="text-[10px] font-bold text-slate-800">🎯 Your Checked Nagpur GPS Location</div>`);
       }
 
-      // ==========================================
-      // 5. GPS POSITION RE-CALIBRATOR
-      // ==========================================
+      function handleLivePhotoUpload(ev, id) {
+        const file = ev.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (!localUploadedPhotos[id]) localUploadedPhotos[id] = [];
+          localUploadedPhotos[id].push(e.target.result);
+          runDatabaseSync(false);
+        };
+        reader.readAsDataURL(file);
+      }
+
       function syncUserLocation() {
-        const hud = document.getElementById('reference-info');
-        hud.textContent = 'Recalibrating GPS...';
-
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
               userCurrentLocation.lat = pos.coords.latitude;
               userCurrentLocation.lng = pos.coords.longitude;
-              userCurrentLocation.isGpsLive = true;
-
-              document.getElementById('location-notice').classList.add('hidden');
-              hud.textContent = "Live GPS verified";
-              document.getElementById('header-location').textContent = "Live Localized GPS Tracker";
-
               runDatabaseSync(true);
             },
-            (err) => {
-              console.warn("Location blocked, using fallback", err);
-              fallbackToZeroMile("Location permission offline. Centered on historic Zero-Mile Stone.");
-            },
-            { enableHighAccuracy: true, timeout: 8000 }
+            () => fallbackToZeroMile(),
+            { timeout: 5000 }
           );
-        } else {
-          fallbackToZeroMile("Geolocation not supported by this container. Mapped to Zero-Mile.");
-        }
+        } else { fallbackToZeroMile(); }
       }
 
-      function fallbackToZeroMile(disclaimer) {
+      function fallbackToZeroMile() {
         userCurrentLocation.lat = nagpurCenter[0];
         userCurrentLocation.lng = nagpurCenter[1];
-        userCurrentLocation.isGpsLive = false;
-
-        const notice = document.getElementById('location-notice');
-        document.getElementById('location-notice-text').textContent = disclaimer;
-        notice.classList.remove('hidden');
-
-        const hud = document.getElementById('reference-info');
-        hud.textContent = "Zero Mile Reference Zone";
-        document.getElementById('header-location').textContent = "Zero Mile Nagpur";
-
+        document.getElementById('location-notice').classList.remove('hidden');
         runDatabaseSync(true);
       }
 
-      // ==========================================
-      // 6. MAIN SYSTEM SYNC MACHINE
-      // ==========================================
-      function runDatabaseSync(fitCamera = false) {
-        // Step 1: Proximity coordinates
-        carWashData.forEach(item => {
-          item.distance = computeHaversineDistanceKm(
-            userCurrentLocation.lat,
-            userCurrentLocation.lng,
-            item.lat,
-            item.lng
-          );
-        });
-
-        // Step 2: Live Filters evaluation
-        let filtered = carWashData.filter(node => {
-          const typeMatch = (node.type === 'shop' && currentFilters.shop) || (node.type === 'home' && currentFilters.home);
-          let searchMatch = true;
-          if (currentFilters.searchQuery) {
-            const query = currentFilters.searchQuery.toLowerCase().trim();
-            searchMatch = node.name.toLowerCase().includes(query) ||
-                          node.address.toLowerCase().includes(query) ||
-                          node.nagpurArea.toLowerCase().includes(query) ||
-                          node.specialty.toLowerCase().includes(query);
-          }
-          return typeMatch && searchMatch;
-        });
-
-        // Step 3: Run Sort criteria
-        if (currentSortOption === 'nearest') {
-          filtered.sort((a, b) => a.distance - b.distance);
-        } else {
-          filtered.sort((a, b) => a.startingPrice - b.startingPrice);
-        }
-
-        // Step 4: Redraw visual elements list
-        populateDirectCards(filtered);
-
-        // Step 5: Refresh Map Pins & Plot User Marker
-        plotNagpurMarkersOnMap(filtered);
-        plotUserGpsTargetMarker();
-
-        // Step 6: Recalculate KPIs bar
-        statsRecalculations(filtered);
-
-        if (fitCamera) {
-          fitPointsCameraView(filtered);
-        }
-
-        // Trigger Lucide icons
-        setTimeout(() => {
-          if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-          }
-        }, 80);
+      function fitPointsCameraView(p) {
+        if(p.length === 0 || !mapObj) return;
+        mapObj.fitBounds(p.map(x => [x.lat, x.lng]), { padding: [40, 40] });
       }
 
-      function fitPointsCameraView(points) {
-        if (!mapObj) return;
-        if (points.length === 0) {
-          mapObj.setView([userCurrentLocation.lat, userCurrentLocation.lng], 13);
-          return;
-        }
-
-        const pointArray = points.map(p => [p.lat, p.lng]);
-        pointArray.push([userCurrentLocation.lat, userCurrentLocation.lng]); 
-
-        mapObj.fitBounds(pointArray, {
-          padding: [50, 50],
-          maxZoom: 15
-        });
-      }
-
-      // Statistics Recalculations Engine
-      function statsRecalculations(active) {
-        document.getElementById('stat-count').textContent = active.length;
-        document.getElementById('results-count-tracker').textContent = `(${active.length} listed)`;
-
-        if (active.length > 0) {
-          const pricing = active.map(n => n.startingPrice);
-          const cheapest = Math.min(...pricing);
-          const ratings = active.map(n => n.rating);
-          const avgReviewed = (ratings.reduce((s, r) => s + r, 0) / active.length).toFixed(1);
-
-          document.getElementById('stat-min-price').textContent = `₹${cheapest} onwards`;
-          document.getElementById('stat-avg-rating').textContent = `${avgReviewed} ★`;
-          document.getElementById('hero-starting-price').textContent = `₹${cheapest}`;
-        } else {
-          document.getElementById('stat-min-price').textContent = `₹0`;
-          document.getElementById('stat-avg-rating').textContent = `0.0 ★`;
-          document.getElementById('hero-starting-price').textContent = `₹0`;
+      function statsRecalculations(a) {
+        document.getElementById('stat-count').textContent = a.length;
+        document.getElementById('results-count-tracker').textContent = `(${a.length} listed)`;
+        if (a.length > 0) {
+          const prices = a.map(x => x.startingPrice);
+          document.getElementById('stat-min-price').textContent = `₹${Math.min(...prices)}`;
+          document.getElementById('stat-avg-rating').textContent = `4.7 ★`;
         }
       }
 
-      // ==========================================
-      // 7. CARD CREATION MACHINE WITH MODULAR DESIGN
-      // ==========================================
-      function populateDirectCards(shops) {
-        const container = document.getElementById('listings-wrapper');
-        container.innerHTML = '';
-
-        if (shops.length === 0) {
-          container.innerHTML = `
-            <div class="bg-white border border-slate-100 rounded-3xl p-10 text-center shadow-premium flex flex-col items-center justify-center space-y-4 fade-in">
-              <div class="w-16 h-16 rounded-2xl bg-nagpur-50 flex items-center justify-center text-slate-400">
-                <i data-lucide="info" class="w-8 h-8 text-nagpur-700"></i>
-              </div>
-              <div>
-                <h4 class="text-base font-extrabold text-slate-900 font-display">No Match Found In Mapped Stations</h4>
-                <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Try clearing search parameters, resizing filters, or resetting back to Nagpur center.</p>
-              </div>
-              <button onclick="resetDirectoryState()" class="px-5 py-2.5 bg-nagpur-700 hover:bg-nagpur-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
-                View All Nagpur Agencies
-              </button>
-            </div>
-          `;
-          return;
-        }
-
-        shops.forEach(wash => {
-          const hasFocus = focusedItemCardId === wash.id;
-          const borderClass = hasFocus
-            ? 'border-nagpur-orange ring-2 ring-orange-200/60 shadow-hover bg-gradient-to-b from-nagpur-50/10 to-white'
-            : 'border-slate-100 bg-white shadow-premium hover:shadow-hover hover:border-slate-200';
-
-          const categoryBadge = wash.type === 'shop'
-            ? `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-nagpur-50 border border-nagpur-100 rounded-xl text-[10px] font-extrabold text-nagpur-700 shadow-sm">
-                 <i data-lucide="store" class="w-3.5 h-3.5 text-nagpur-700"></i>
-                 <span>🏬 Nagpur Stationed Studio</span>
-               </span>`
-            : `<span class="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-orange-50 border border-orange-100 rounded-xl text-[10px] font-extrabold text-nagpur-orange shadow-sm">
-                 <i data-lucide="truck" class="w-3.5 h-3.5 text-nagpur-orange"></i>
-                 <span>🏡 Nagpur Doorstep Wash</span>
-               </span>`;
-
-          const verifyBadge = wash.verified
-            ? `<div class="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-emerald-50 border border-emerald-150 text-emerald-700 text-[9px] font-extrabold shadow-sm select-none">
-                 <i data-lucide="badge-check" class="w-3.5 h-3.5 text-emerald-600 fill-emerald-100"></i>
-                 <span>NAGPUR VERIFIED ✓</span>
-               </div>`
-            : `<div class="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-slate-50 border border-slate-100 text-slate-400 text-[9px] font-extrabold">
-                 <span>COMMUNITY DIRECTORY</span>
-               </div>`;
-
-          // Image strategy: modular formatting path images/[folder-id]/[filename]
-          const structuralImagePath = "images/" + wash.shopFolderId + "/" + wash.imageFilename;
-
-          // Merge manual upload images if present
-          const customPreviews = localUploadedPhotos[wash.id] || [];
-
-          let imagesCarouselGrid = `
-            <div class="relative w-full h-24 rounded-xl overflow-hidden border border-slate-100 bg-slate-100 group">
-              <img src="${structuralImagePath}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1601362840469-51e4d8d59085?auto=format&fit=crop&w=600&q=80';" alt="Studio Photo" class="w-full h-full object-cover transition-transform group-hover:scale-105" referrerpolicy="no-referrer">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <span class="absolute bottom-1.5 left-2 px-1.5 py-0.5 bg-slate-900/80 text-[8px] font-bold text-white tracking-wide rounded">
-                MAIN STUDIO
-              </span>
-            </div>
-          `;
-
-          // Render live preview photo nodes
-          customPreviews.forEach((b64, index) => {
-            imagesCarouselGrid += `
-              <div class="relative w-full h-24 rounded-xl overflow-hidden border border-slate-100 bg-slate-100">
-                <img src="${b64}" alt="User Upload Live" class="w-full h-full object-cover">
-                <span class="absolute bottom-1.5 left-2 px-1.5 py-0.5 bg-emerald-600 text-[8px] font-extrabold text-white tracking-wide rounded">
-                  USER SNAP ${index + 1}
-                </span>
-              </div>
-            `;
-          });
-
-          // Empty slots to let admin or users snap a quick photo
-          const trustNoticeToggle = customPreviews.length > 0 ? `
-            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3.5 text-xs text-emerald-800 space-y-2 relative fade-in">
-              <div class="flex items-start space-x-2">
-                <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0 animate-bounce"></i>
-                <div>
-                  <span class="font-extrabold text-emerald-950 block">Snap Uploaded Locally!</span>
-                  <span>To add this image permanently to Nagoya directory records on GitHub, notify our Orange City helpline:</span>
-                </div>
-              </div>
-              <a href="https://wa.me/919112200099?text=Hello!%20I%20have%20loaded%20a%20new%20live%20photo%20for%20shop%20ID%20${wash.id}.%20Please%20verify%20the%20detailing%20snap." target="_blank" class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-bold shadow-md transition-all justify-center w-full focus:outline-none">
-                 <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                 <span>Verify Photo via WhatsApp</span>
-              </a>
-            </div>
-          ` : '';
-
-          container.innerHTML += `
-            <article id="wash-card-${wash.id}" onclick="selectCardHighlight(${wash.id}, true)" class="border rounded-2xl p-5 cursor-pointer transform hover:-translate-y-0.5 transition-all duration-300 flex flex-col ${borderClass} relative group overflow-hidden fade-in">
-              
-              <!-- Top Row Info -->
-              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-50">
-                <div class="space-y-1">
-                  <div class="flex items-center flex-wrap gap-2">
-                    ${categoryBadge}
-                    ${verifyBadge}
-                  </div>
-                  <h4 class="text-base font-extrabold text-[#0e1c4a] group-hover:text-nagpur-orange transition-colors font-display mt-1.5 leading-tight">${wash.name}</h4>
-                  
-                  <div class="flex items-center space-x-1.5 text-xs text-slate-500 font-semibold">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i>
-                    <span>${wash.address}</span>
-                  </div>
-                </div>
-
-                <!-- Right Side Rates KPI -->
-                <div class="sm:text-right flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto pt-2 sm:pt-0">
-                  <div class="text-right">
-                    <span class="text-[8px] text-slate-400 block font-bold uppercase tracking-wider">Hatchback starts:</span>
-                    <span class="text-lg font-black text-[#1e51ff] font-display">₹${wash.startingPrice} <span class="text-xs font-normal text-slate-400">onwards</span></span>
-                  </div>
-                  <div class="sm:mt-1 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded text-[9px] text-slate-500 font-bold tracking-wide">
-                    SUV Rate: ₹${wash.startingPriceSUV}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Worker Live Photo Section with Upload option -->
-              <div class="py-4 space-y-3">
-                <div class="flex items-center justify-between">
-                  <h5 class="text-xs font-extrabold text-slate-600 flex items-center space-x-1.5 uppercase font-mono tracking-wider">
-                    <span>📸 Shop Media Fronts & Snapshots</span>
-                  </h5>
-                  <span class="text-[10px] text-slate-400 font-medium">Verified Structural Path</span>
-                </div>
-
-                <!-- Structured Images display carousel grid -->
-                <div class="grid grid-cols-4 gap-2.5">
-                  ${imagesCarouselGrid}
-                  
-                  <!-- File snap trigger -->
-                  <label class="relative w-full h-24 rounded-xl border-2 border-dashed border-slate-200 hover:border-nagpur-700/50 flex flex-col items-center justify-center cursor-pointer bg-slate-50 hover:bg-slate-100/80 text-slate-400 hover:text-nagpur-800 transition-all select-none" onclick="event.stopPropagation()">
-                    <i data-lucide="camera" class="w-5 h-5 mb-1 text-slate-400"></i>
-                    <span class="text-[9px] font-extrabold text-center leading-tight">Add Live<br>Snap</span>
-                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleLivePhotoUpload(event, ${wash.id})">
-                  </label>
-                </div>
-
-                ${trustNoticeToggle}
-              </div>
-
-              <!-- Metrics bar -->
-              <div class="pt-3 border-t border-slate-150/75 flex flex-wrap items-center justify-between gap-2 text-xs">
-                <div class="flex items-center space-x-1.5 max-w-[70%]">
-                  <i data-lucide="award" class="w-3.5 h-3.5 text-nagpur-orange flex-shrink-0 animate-pulse"></i>
-                  <p class="text-[11px] text-slate-500 italic truncate">${wash.specialty}</p>
-                </div>
-
-                <div class="flex items-center space-x-3 text-slate-800 font-bold select-none">
-                  <span class="inline-flex items-center space-x-1 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-lg text-[10px] font-bold text-slate-600">
-                    <i data-lucide="navigation" class="w-3 h-3 text-nagpur-orange"></i>
-                    <span>${wash.distance} km</span>
-                  </span>
-
-                  <!-- Phone calling CTA -->
-                  <a href="tel:${wash.phone}" onclick="event.stopPropagation()" class="px-3.5 py-1.5 bg-[#16a34a] hover:bg-emerald-700 rounded-xl text-[10px] font-extrabold text-white transition-all shadow-badge active:scale-95 flex items-center space-x-1 focus:outline-none">
-                    <i data-lucide="phone" class="w-3 h-3"></i>
-                    <span>Call</span>
-                  </a>
-                </div>
-              </div>
-
-            </article>
-          `;
-        });
-      }
-
-      // ==========================================
-      // 8. PHOTO UPLOADER DRIVER (FILEREADER API)
-      // ==========================================
-      function handleLivePhotoUpload(ev, id) {
-        ev.stopPropagation(); 
-        const file = ev.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          const b64 = evt.target.result;
-
-          if (!localUploadedPhotos[id]) {
-            localUploadedPhotos[id] = [];
-          }
-          localUploadedPhotos[id].push(b64);
-
-          // Refresh database displays
-          runDatabaseSync(false);
-
-          // Focus on that card dynamically
-          setTimeout(() => {
-            const card = document.getElementById(`wash-card-${id}`);
-            if (card) {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }, 350);
-        };
-        reader.readAsDataURL(file);
-      }
-
-      // ==========================================
-      // 9. INSTANT INTERACTIVE SELECTIONS
-      // ==========================================
-      function selectCardHighlight(id, flyToCenter = true) {
-        focusedItemCardId = focusedItemCardId === id ? null : id;
-        runDatabaseSync(false);
-
-        if (focusedItemCardId !== null && flyToCenter) {
-          const match = carWashData.find(w => w.id === focusedItemCardId);
-          if (match && mapObj) {
-            mapObj.flyTo([match.lat, match.lng], 14, {
-              animate: true,
-              duration: 1.0
-            });
-          }
-        }
-      }
-
-      function handleInstantSearch(val) {
-        currentFilters.searchQuery = val;
-        
-        const clearBtn = document.getElementById('clear-search-btn');
-        if (val) {
-          clearBtn.classList.remove('hidden');
-        } else {
-          clearBtn.classList.add('hidden');
-        }
-        runDatabaseSync(false);
-      }
-
-      function clearLocalSearch() {
-        document.getElementById('directory-search-input').value = '';
-        currentFilters.searchQuery = '';
-        document.getElementById('clear-search-btn').classList.add('hidden');
-        runDatabaseSync(false);
-      }
-
-      function toggleLocalFilter(filterKey) {
-        currentFilters[filterKey] = !currentFilters[filterKey];
-
-        const activeClass = 'absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400 transition-all scale-100';
-        const inactiveClass = 'absolute top-2 right-2 w-2.5 h-2.5 bg-slate-500 rounded-full transition-all scale-75';
-
-        const dot = document.getElementById(`filter-dot-${filterKey}`);
-        const button = document.getElementById(`filter-${filterKey}-btn`);
-
-        if (currentFilters[filterKey]) {
-          dot.className = activeClass;
-          button.classList.add('bg-white/5');
-          button.classList.remove('opacity-40');
-          button.setAttribute('data-active', 'true');
-        } else {
-          dot.className = inactiveClass;
-          button.classList.remove('bg-white/5');
-          button.classList.add('opacity-40');
-          button.setAttribute('data-active', 'false');
-        }
-
-        runDatabaseSync(true);
-      }
-
-      function setDirectorySort(sortType) {
-        currentSortOption = sortType;
-
-        const base = 'px-3.5 py-1.8 rounded-lg flex items-center space-x-1 transition-all';
-        const active = 'bg-white text-slate-950 shadow-sm';
-        const inactive = 'text-slate-500 hover:text-slate-950 hover:bg-white/40';
-
-        const nearestSelector = document.getElementById('sort-nearest-btn');
-        const priceSelector = document.getElementById('sort-price-btn');
-
-        if (sortType === 'nearest') {
-          nearestSelector.className = `${base} ${active}`;
-          priceSelector.className = `${base} ${inactive}`;
-        } else {
-          nearestSelector.className = `${base} ${inactive}`;
-          priceSelector.className = `${base} ${active}`;
-        }
-
-        runDatabaseSync(false);
-      }
-
-      function resetDirectoryState() {
-        clearLocalSearch();
-        currentFilters.shop = true;
-        currentFilters.home = true;
-        currentSortOption = 'nearest';
-        focusedItemCardId = null;
-
-        // Reset visual badges
-        const shopBadge = document.getElementById('filter-dot-shop');
-        const homeBadge = document.getElementById('filter-dot-home');
-        const shopPill = document.getElementById('filter-shop-btn');
-        const homePill = document.getElementById('filter-home-btn');
-
-        shopBadge.className = 'absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400 transition-all scale-100';
-        homeBadge.className = 'absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400 transition-all scale-100';
-
-        shopPill.className = 'group relative flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white/5 border-2 border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all duration-200';
-        homePill.className = 'group relative flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white/5 border-2 border-transparent hover:border-nagpur-400 text-center cursor-pointer transition-all duration-200';
-
-        shopPill.setAttribute('data-active', 'true');
-        homePill.setAttribute('data-active', 'true');
-
-        setDirectorySort('nearest');
-        runDatabaseSync(true);
-      }
-
-      // ==========================================
-      // 10. INTERACTIVE ADMIN UTILITY CREATOR DRAWER
-      // ==========================================
-      function toggleCreatorDrawer() {
-        const drawer = document.getElementById('creator-drawer');
-        const isHidden = drawer.classList.contains('translate-x-full');
-        
-        if (isHidden) {
-          drawer.classList.remove('translate-x-full');
-          // Delay map viewport invalidation. Separates amateur mapping from professional.
-          setTimeout(() => {
-            if (creatorMapObj) {
-              creatorMapObj.invalidateSize(true);
-              creatorMapObj.setView(nagpurCenter, 12);
-            }
-          }, 350);
-        } else {
-          drawer.classList.add('translate-x-full');
-        }
-      }
-
-      // Automatically sync name strings with folder slug ID suggestions
+      function handleInstantSearch(v) { currentFilters.searchQuery = v; runDatabaseSync(false); }
+      function clearLocalSearch() { document.getElementById('directory-search-input').value = ''; currentFilters.searchQuery = ''; runDatabaseSync(false); }
+      function setDirectorySort(s) { currentSortOption = s; runDatabaseSync(false); }
+      function toggleCreatorDrawer() { document.getElementById('creator-drawer').classList.toggle('translate-x-full'); setTimeout(() => creatorMapObj.invalidateSize(), 300); }
       function autoSuggestFolderId() {
-        const rawName = document.getElementById('creator-name').value;
-        const rawArea = document.getElementById('creator-area').value;
-        if (!rawName) return;
-
-        let slug = rawName.toLowerCase()
-              .replace(/[^a-z0-9\s-]/g, '') // strip special characters
-              .trim()
-              .replace(/\s+/g, '-'); // space delimiters
-
-        if (rawArea) {
-          slug += "-" + rawArea.toLowerCase().replace(/[^a-z0-9]/g, '');
-        }
-
-        document.getElementById('creator-folder-id').value = slug;
-        formatFolderIdField();
+        const n = document.getElementById('creator-name').value;
+        document.getElementById('creator-folder-id').value = n.toLowerCase().replace(/[^a-z0-9]/g, '-');
       }
 
-      // Monitor changes to sync text indicators
-      function formatFolderIdField() {
-        const val = document.getElementById('creator-folder-id').value.trim();
-        const filename = document.getElementById('creator-image-filename').value.trim() || 'wash_front.jpg';
-        const targetOutput = document.getElementById('creator-resolved-preview-path');
-        
-        targetOutput.textContent = `images/${val || 'placeholder'}/${filename}`;
+      function toggleLocalFilter(f) {
+        currentFilters[f] = !currentFilters[f];
+        document.getElementById(`filter-dot-${f}`).className = currentFilters[f] ? 'absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400' : 'absolute top-2 right-2 w-2 h-2 rounded-full bg-slate-400';
+        runDatabaseSync(true);
       }
 
-      // Add simple oninput listeners to sync live path slugs
-      document.getElementById('creator-name').addEventListener('input', autoSuggestFolderId);
-      document.getElementById('creator-image-filename').addEventListener('input', formatFolderIdField);
-      document.getElementById('creator-folder-id').addEventListener('input', formatFolderIdField);
-
-      // Snip JSON generator compiling inputs
       function generateShopSnippetsCode() {
-        const name = document.getElementById('creator-name').value.trim();
-        const type = document.getElementById('creator-type').value;
-        const area = document.getElementById('creator-area').value.trim() || "Nagpur Core";
-        const priceHatch = parseInt(document.getElementById('creator-price-starter').value) || 299;
-        const priceSUV = parseInt(document.getElementById('creator-price-suv').value) || 449;
-        const phone = document.getElementById('creator-phone').value.trim() || "+91 91122 00099";
-        const address = document.getElementById('creator-address').value.trim() || "Nagpur, Maharashtra";
+        const name = document.getElementById('creator-name').value;
         const lat = parseFloat(document.getElementById('creator-lat').value);
         const lng = parseFloat(document.getElementById('creator-lng').value);
-        const specialty = document.getElementById('creator-specialty').value.trim() || "Foam cleaning, polymer wax polish";
-        const shopFolderId = document.getElementById('creator-folder-id').value.trim() || "nagpur-wash-studio";
-        const imageFilename = document.getElementById('creator-image-filename').value.trim() || "wash_front.jpg";
-
-        if (!name) {
-          alert("Please enter a Business Name before generating coding snippets.");
-          return;
-        }
-        if (isNaN(lat) || isNaN(lng)) {
-          alert("Please click anywhere on the Map Location Picker above to automatically fetch matching GPS coordinates first!");
-          return;
-        }
-
-        // Build object structure matching criteria precisely
-        const snippetObject = {
-          id: Date.now(),
-          name: name,
-          type: type,
-          startingPrice: priceHatch,
-          startingPriceSUV: priceSUV,
-          rating: 4.8,
-          reviews: 1,
-          address: address,
-          phone: phone,
-          lat: lat,
-          lng: lng,
-          specialty: specialty,
-          nagpurArea: area,
-          verified: false,
-          shopFolderId: shopFolderId,
-          imageFilename: imageFilename,
-          image: `images/${shopFolderId}/${imageFilename}` // Enforced image syntax strategy
-        };
-
-        const jsonBoxTextarea = document.getElementById('creator-json-textarea');
-        jsonBoxTextarea.value = JSON.stringify(snippetObject, null, 2);
-
-        // Show snippet block
-        document.getElementById('exporter-block').classList.remove('hidden');
+        if (!name || isNaN(lat)) { alert("Enter business name and click map position coords!"); return; }
         
-        // Stagger focus
-        setTimeout(() => {
-          jsonBoxTextarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 150);
-      }
-
-      // Safe clipboard copier with active visual response alerts
-      function copyCreatorJsonToClipboard() {
-        const codeText = document.getElementById('creator-json-textarea').value;
-        if (!codeText) return;
-
-        navigator.clipboard.writeText(codeText).then(() => {
-          const btnText = document.getElementById('copy-text-btn');
-          const btnIcon = document.getElementById('copy-icon-btn');
-          
-          btnText.textContent = "JSON Snippet Copied!";
-          btnIcon.setAttribute('data-lucide', 'check');
-          if (typeof lucide !== 'undefined') lucide.createIcons();
-
-          setTimeout(() => {
-            btnText.textContent = "Copy JSON Code to Clipboard";
-            btnIcon.setAttribute('data-lucide', 'clipboard');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-          }, 2500);
-        }).catch(err => {
-          console.error("Failed copy fallback", err);
-          alert("Writing failed. Select-all text box to copy manual logs.");
-        });
-      }
-
-      // Verification simulator allowing developers to add and interact with nodes directly
-      function simulateAddFromCreator() {
-        const name = document.getElementById('creator-name').value.trim();
-        const type = document.getElementById('creator-type').value;
-        const area = document.getElementById('creator-area').value.trim() || "Nagpur Local Precinct";
-        const priceHatch = parseInt(document.getElementById('creator-price-starter').value) || 299;
-        const priceSUV = parseInt(document.getElementById('creator-price-suv').value) || 449;
-        const phone = document.getElementById('creator-phone').value.trim() || "+91 91122 00099";
-        const address = document.getElementById('creator-address').value.trim() || "Nagpur, Maharashtra";
-        const lat = parseFloat(document.getElementById('creator-lat').value);
-        const lng = parseFloat(document.getElementById('creator-lng').value);
-        const specialty = document.getElementById('creator-[#0e1c4a]').value || document.getElementById('creator-specialty').value.trim() || "High power active foam arch detailing specialists";
-        const shopFolderId = document.getElementById('creator-folder-id').value.trim() || "nagpur-precision-wash";
-        const imageFilename = document.getElementById('creator-image-filename').value.trim() || "profile_shot.jpg";
-
-        if (!name || isNaN(lat) || isNaN(lng)) {
-          alert("Please input business name metadata and select coordinates on the map picker map before verifying.");
-          return;
-        }
-
-        const simulatedNodeObj = {
+        const obj = {
           id: Date.now(),
           name: name,
-          type: type,
-          startingPrice: priceHatch,
-          startingPriceSUV: priceSUV,
-          rating: 4.7,
-          reviews: 1,
-          address: address,
-          phone: phone,
-          lat: lat,
-          lng: lng,
-          specialty: specialty,
-          nagpurArea: area,
+          type: document.getElementById('creator-type').value,
+          startingPrice: parseInt(document.getElementById('creator-price-starter').value) || 299,
+          startingPriceSUV: parseInt(document.getElementById('creator-price-suv').value) || 449,
+          rating: 4.8, reviews: 1,
+          address: document.getElementById('creator-address').value,
+          phone: document.getElementById('creator-phone').value,
+          lat: lat, lng: lng,
+          specialty: document.getElementById('creator-specialty').value,
+          nagpurArea: document.getElementById('creator-area').value || "Nagpur Core",
           verified: false,
-          shopFolderId: shopFolderId,
-          imageFilename: imageFilename
+          shopFolderId: document.getElementById('creator-folder-id').value,
+          imageFilename: document.getElementById('creator-image-filename').value
         };
 
-        // Prepend so that it appears instantly at top
-        carWashData.unshift(simulatedNodeObj);
-        focusedItemCardId = simulatedNodeObj.id;
+        document.getElementById('creator-json-textarea').value = JSON.stringify(obj, null, 2);
+        document.getElementById('exporter-block').classList.remove('hidden');
+      }
 
-        // Sync and close drawer
+      function copyCreatorJsonToClipboard() {
+        navigator.clipboard.writeText(document.getElementById('creator-json-textarea').value);
+        alert("JSON Object Copied! Open data.json on GitHub, paste it at the bottom, and save.");
+      }
+
+      function simulateAddFromCreator() {
+        const name = document.getElementById('creator-name').value;
+        const lat = parseFloat(document.getElementById('creator-lat').value);
+        const lng = parseFloat(document.getElementById('creator-lng').value);
+        if (!name || isNaN(lat)) return;
+
+        const mockNode = {
+          id: Date.now(), name: name, type: document.getElementById('creator-type').value,
+          startingPrice: parseInt(document.getElementById('creator-price-starter').value) || 299,
+          startingPriceSUV: parseInt(document.getElementById('creator-price-suv').value) || 449,
+          rating: 4.7, reviews: 1, address: document.getElementById('creator-address').value,
+          phone: document.getElementById('creator-phone').value, lat: lat, lng: lng,
+          specialty: document.getElementById('creator-specialty').value,
+          nagpurArea: document.getElementById('creator-area').value || "Nagpur Local",
+          verified: false, shopFolderId: document.getElementById('creator-folder-id').value, imageFilename: document.getElementById('creator-image-filename').value
+        };
+
+        carWashData.unshift(mockNode);
         toggleCreatorDrawer();
         runDatabaseSync(true);
-
-        // Scroll to card
-        setTimeout(() => {
-          const matchedCard = document.getElementById(`wash-card-${simulatedNodeObj.id}`);
-          if (matchedCard) {
-            matchedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }, 500);
       }
 
-      // ==========================================
-      // 11. BOOTSTRAPPING FLOW & JSON FETCH
-      // ==========================================
-      function bootstrapNagpurCarWashApp() {
-        const badge = document.getElementById('connection-mode-badge');
-        
-        // Run core Leaflet map loads
-        setupLeafletMaps();
-
-        // High robust fetch execution
-        fetch('data.json')
-          .then(res => {
-            if (!res.ok) {
-              throw new Error("HTTP connection failed, serving backup store.");
-            }
-            return res.json();
-          })
-          .then(data => {
-            // Success loaded
-            carWashData = data;
-            badge.textContent = "LIVE REMOTE SYNC";
-            badge.className = "bg-emerald-600 text-white rounded-lg px-2.5 py-1 text-[10px] font-bold font-mono tracking-wide shadow-sm";
-            runDatabaseSync(true);
-          })
-          .catch(error => {
-            // CORS or offline local network fallback load
-            console.warn("Connection offline or fetching data.json met CORS restrictions. Activating local fallback client datastore layer:", error);
-            carWashData = offlineFallbackWashData;
-            badge.textContent = "OFFLINE BACKUP MODE";
-            badge.className = "bg-amber-600 text-white rounded-lg px-2.5 py-1 text-[10px] font-bold font-mono tracking-wide shadow-sm";
-            runDatabaseSync(true);
-          });
-      }
-
-      // Initial entry point hook
       window.onload = function() {
-        bootstrapNagpurCarWashApp();
+        setupLeafletMaps();
+        fetch('data.json')
+          .then(res => res.json())
+          .then(data => { carWashData = data; runDatabaseSync(true); })
+          .catch(() => { carWashData = offlineFallbackWashData; runDatabaseSync(true); });
       };
     </script>
   </body>
